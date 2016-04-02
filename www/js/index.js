@@ -17,45 +17,64 @@
  * under the License.
  */
 var app = {
-	deviceReadyDeferred : $.Deferred(),
-	jqmReadyDeferred : $.Deferred(),
-	// Application Constructor
-	initialize : function() {
-		this.bindEvents();
-		$.when(this.deviceReadyDeferred, this.jqmReadyDeferred).then(
-				this.frameworksInitialized);
-	},
-	// Bind Event Listeners
-	//
-	// Bind any events that are required on startup. Common events are:
-	// 'load', 'deviceready', 'offline', and 'online'.
-	bindEvents : function() {
-		document.addEventListener('deviceready', this.onDeviceReady, false);
-		$(document).on("mobileinit", function() {
-			app.jqmReadyDeferred.resolve();
-		});
-	},
-	// deviceready Event Handler
-	onDeviceReady : function() {
-		app.deviceReadyDeferred.resolve();
-	},
-	// jQM and PhoneGap initialized
-	// place app initialization code here
-	frameworksInitialized : function() {
-		console.log('Frameworks initialized');
-	}
+    deviceReadyDeferred: $.Deferred(),
+    jqmReadyDeferred: $.Deferred(),
+    // Application Constructor
+    initialize: function() {
+        this.bindEvents();
+        $.when(this.deviceReadyDeferred, this.jqmReadyDeferred).then(
+            this.frameworksInitialized);
+    },
+    // Bind Event Listeners
+    //
+    // Bind any events that are required on startup. Common events are:
+    // 'load', 'deviceready', 'offline', and 'online'.
+    bindEvents: function() {
+        document.addEventListener('deviceready', this.onDeviceReady,
+            false);
+        $(document).on("mobileinit", function() {
+            app.jqmReadyDeferred.resolve();
+        });
+    },
+    // deviceready Event Handler
+    onDeviceReady: function() {
+        app.deviceReadyDeferred.resolve();
+    },
+    // jQM and PhoneGap initialized
+    // place app initialization code here
+    frameworksInitialized: function() {
+        console.log('Frameworks initialized');
+    }
 };
-
 app.initialize();
 
-function openSite()
-{
-	var ref = window.open('http://www.gmail.com', '_blank', 'location=yes');
-    ref.addEventListener('loadstart', function(event) { alert(event.url); });
- }   
+function openSite() {
+    var ref = window.open('http://www.google.com', '_blank', 'location=yes');
+    ref.addEventListener('loadstart', function(event) {
+        alert(event.url);
+    });
+}
 
-
-
-
-
-    
+function Geo() {
+    // onSuccess Callback
+    // This method accepts a Position object, which contains the
+    // current GPS coordinates
+    //
+    var onSuccess = function(position) {
+        alert('Latitude: ' + position.coords.latitude + '\n' +
+            'Longitude: ' + position.coords.longitude + '\n' +
+            'Altitude: ' + position.coords.altitude + '\n' +
+            'Accuracy: ' + position.coords.accuracy + '\n' +
+            'Altitude Accuracy: ' + position.coords.altitudeAccuracy +
+            '\n' + 'Heading: ' + position.coords.heading + '\n' +
+            'Speed: ' + position.coords.speed + '\n' +
+            'Timestamp: ' + position.timestamp + '\n');
+    };
+    // onError Callback receives a PositionError object
+    //
+    function onError(error) {
+        alert('code: ' + error.code + '\n' + 'message: ' + error.message +
+            '\n');
+    }
+    navigator.geolocation.getCurrentPosition(onSuccess, onError);
+}
